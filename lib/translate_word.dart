@@ -2,15 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-//TODO テキストフィールドを設置　　　　　　　　　　達成
-//TODO キーボードを日本語とフランス語に限定する。
-//TODO テキストフィールドで入力したものを　　　　　達成!!
-//TODO
-//TODO
-//TODO
-//TODO
-
-
 class TranslateWord extends StatefulWidget {
 
   @override
@@ -24,7 +15,11 @@ class _TranslateWordState extends State<TranslateWord> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('文字で翻訳'),
+        title: Text('文字で翻訳',style: TextStyle(color: Colors.black,fontSize: 30),),
+        flexibleSpace: Image(
+          image: AssetImage('images/france.png'),
+          fit: BoxFit.cover,
+        ),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -36,7 +31,6 @@ class _TranslateWordState extends State<TranslateWord> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // Text('', style: TextStyle(color: Colors.blue),),
                 const SizedBox(height: 8,),
                 //TODO 他を押すとtextfieldを閉じるようにする
                 // テキスト入力
@@ -76,7 +70,7 @@ class _TranslateWordState extends State<TranslateWord> {
                   height: 50,
                   child: RaisedButton(
                     elevation: 16,
-                    color: Colors.red,
+                    color: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -90,6 +84,7 @@ class _TranslateWordState extends State<TranslateWord> {
       ),
     );
   }
+
   void openTranslate() async {
     final data11 = ClipboardData(text: '$_text');
     Clipboard.setData(data11);

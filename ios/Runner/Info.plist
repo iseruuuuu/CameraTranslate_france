@@ -4,6 +4,14 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>文字取得のためにカメラの許可が必要になります。</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>文字取得のために写真の許可が必要になります。</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>文字認識のために音声が必要になります。</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>文字認識のために音声解が必要になります。</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -11,7 +19,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>camera_france_app</string>
+	<string>フランス語翻訳</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

@@ -3,6 +3,8 @@ import 'package:camera_france_app/translate_voice.dart';
 import 'package:camera_france_app/translate_word.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,14 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,10 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(90),
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TranslateCamera()
-                    ),
-                  );
+                  _onPickImageSelected();
                 },
                 child: Text("カメラで翻訳",style: TextStyle(fontSize: 25),),),
             ),
@@ -117,11 +108,18 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+  void _onPickImageSelected() async {
+    var imageSource = ImageSource.camera;
+    try {
+      final file = await ImagePicker.pickImage(source: imageSource);
+      if (file == null) {
+        throw Exception('ファイルを取得できませんでした');
+      }
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => TranslateCamera(file)));
+    } catch (e) {
+    }
   }
 }

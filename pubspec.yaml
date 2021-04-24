@@ -29,6 +29,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   url_launcher: ^6.0.3
+  image_picker: ^0.4.4
+  mlkit: ^0.15.1
+  path_provider: ^2.0.1
+  speech_recognition: ^0.3.0+1
+
 
 dev_dependencies:
   flutter_test:
