@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:speech_recognition/speech_recognition.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 //パッケージが日本語対応していない。。。
 const languages = const [
@@ -28,6 +30,8 @@ class _TranslateVoiceState extends State<TranslateVoice> {
   bool _isListening = false;
 
   String transcription = '';
+  String OnOf = '';
+  AudioCache _player = AudioCache();
 
   //String _currentLocale = 'en_US';
   Language selectedLang = languages.first;
@@ -40,7 +44,7 @@ class _TranslateVoiceState extends State<TranslateVoice> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   void activateSpeechRecognizer() {
-    print('_MyAppState.activateSpeechRecognizer... ');
+    // print('_MyAppState.activateSpeechRecognizer... ');
     _speech = new SpeechRecognition();
     _speech.setAvailabilityHandler(onSpeechAvailability);
     _speech.setCurrentLocaleHandler(onCurrentLocale);
@@ -61,6 +65,7 @@ class _TranslateVoiceState extends State<TranslateVoice> {
           image: AssetImage('images/france.png'),
           fit: BoxFit.cover,
         ),
+
         actions: [
           new PopupMenuButton<Language>(
             onSelected: _selectLangHandler,
@@ -68,6 +73,7 @@ class _TranslateVoiceState extends State<TranslateVoice> {
           )
         ],
       ),
+
       body: new Padding(
         padding: new EdgeInsets.all(8.0),
         child: new Center(
@@ -83,28 +89,46 @@ class _TranslateVoiceState extends State<TranslateVoice> {
               _buildButton(
                 onPressed: _speechRecognitionAvailable && !_isListening
                     ? () => start()
-                    : null,
+                    : () => stop(),
                 label: _isListening
-                    ? '録音中.....'
-                    : '録音する (${selectedLang.name})',
+                    ? '■'
+                    : '●',
+                color: _speechRecognitionAvailable && !_isListening
+                    ? Colors.white
+                    : Colors.white,
+
               ),
-              //キャンセルボタン
+
+              _text(label: _isListening
+                  ? 'Recording Now...'
+                  : 'No Recording....'),
+
+              /*
+              //TODO キャンセルボタン
               _buildButton(
                 onPressed: _isListening ? () => cancel() : null,
                 label: 'キャンセル',
               ),
-
+               */
+              //TODO 停止ボタン
+              /*
               _buildButton(
                 onPressed: _isListening ? () => stop() : null,
-                label: 'ストップ',
+                label: '停止',
               ),
+
+               */
               Padding(
                 padding: new EdgeInsets.all(12.0),
-                child: new RaisedButton(
-                  color: Colors.red,
-                  onPressed: openTranslate,
-                  child: new Text('翻訳する',
-                    style: const TextStyle(color: Colors.black),
+                child: Container(
+                  width: 200,
+                  height: 80,
+                  child: new RaisedButton(
+                    color: Colors.red,
+                    onPressed: openTranslate,
+                    child: new Text('翻訳する',
+                      style: const TextStyle(color: Colors.white,fontSize: 25),
+                    ),
                   ),
                 ),
               ),
@@ -127,23 +151,32 @@ class _TranslateVoiceState extends State<TranslateVoice> {
     setState(() => selectedLang = lang);
   }
 
-  Widget _buildButton({String label, VoidCallback onPressed}) => new Padding(
-      padding: new EdgeInsets.all(12.0),
-      child: new RaisedButton(
-        color: Colors.red,
-        onPressed: onPressed,
-        child: new Text(
-          label,
-          style: const TextStyle(color: Colors.white),
+  Widget _buildButton({String label, VoidCallback onPressed, Color color}) =>
+      new Padding(
+        padding: new EdgeInsets.all(40.0),
+        child: new FloatingActionButton(
+          backgroundColor: color,
+          onPressed: onPressed,
+          child: new Text(label,style: const TextStyle(color: Colors.red,fontSize: 45),
+          ),
         ),
-      ));
+      );
 
-  void start() => _speech
-      .listen(locale: selectedLang.code)
-      .then((result) => print('_MyAppState.start => result $result'));
+  Widget _text({String label}) =>
+      new Padding(
+        padding: new EdgeInsets.all(15.0),
+        child: Text(
+            label,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20),
+        ),
+      );
 
-  void cancel() =>
-      _speech.cancel().then((result) => setState(() => _isListening = result));
+//_player.play('move.mp3')
+
+  void start() => _speech.listen(locale: selectedLang.code).then((result) => print('録音開始'));
+
+  void cancel() => _speech.cancel().then((result) => setState(() => _isListening = result));
 
   void stop() => _speech.stop().then((result) {
     setState(() => _isListening = result);
